@@ -7,7 +7,19 @@ I used a PID controller to make the quadcopter land on the platform.
 
 
 Here is a demo on how it works when the platform moves and the quadcopter needs to land on it.
-[watch the video here](https://github.com/MonojitSarkar/Autonomous-Landing-ROS/blob/main/video/translating.mp4)
+
+https://github.com/user-attachments/assets/59b9d441-5bcd-4992-b78b-2fdbaa3effc8
+
+
 
 Simulation when the platform is stationary and the quadcopter needs to land on it.
-[watch the video here](https://github.com/MonojitSarkar/Autonomous-Landing-ROS/blob/main/video/notTranslating.mp4)
+
+
+
+
+https://github.com/user-attachments/assets/293268e3-df99-47c0-bf46-80540ddc5ed3
+
+
+
+
+
