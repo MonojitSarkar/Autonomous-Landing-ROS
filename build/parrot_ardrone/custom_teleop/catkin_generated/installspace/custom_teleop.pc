@@ -1,0 +1,8 @@
+prefix=/home/monojit/simulation_ws/install
+
+Name: custom_teleop
+Description: Description of custom_teleop
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

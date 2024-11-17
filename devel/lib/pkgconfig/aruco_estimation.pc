@@ -1,0 +1,8 @@
+prefix=/home/monojit/simulation_ws/devel
+
+Name: aruco_estimation
+Description: Description of aruco_estimation
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

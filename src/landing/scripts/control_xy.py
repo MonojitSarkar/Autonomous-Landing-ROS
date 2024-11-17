@@ -1,0 +1,127 @@
+#!/usr/bin/env python3
+
+"""Writing the code to make the drone hover at a partiular location except the height component"""
+
+import rospy
+from std_msgs.msg import Float32, Float32MultiArray
+from simple_pid import PID
+from rospy_tutorials.msg import Floats
+from rospy.numpy_msg import numpy_msg
+from geometry_msgs.msg import Twist
+from std_msgs.msg import Bool, Empty
+
+class Controller(object):
+    def __init__(self):
+        self.trans = rospy.Subscriber('/pose', numpy_msg(Floats), self.callback)
+        self.posctrl = rospy.Publisher('/drone/posctrl', Bool, queue_size = 10)
+        self.vel = rospy.Publisher('/cmd_vel', Twist, queue_size = 10)
+        self.var_empty = Empty()
+        self.var_bool = Bool()
+        self.var_bool.data = False
+
+        self.posctrl.publish(self.var_bool)
+
+    def callback(self, data):
+        print("Let's see how many times this function gets called")
+        current_x, current_y, current_z = data.data[0], data.data[1], data.data[2]
+        #print(current_x, current_y)
+        p, i, d = 0.1, 0.000003, 0.0
+
+        """z_setpoint = 0
+        z_range = 0.2
+        z_upperpoint = z_setpoint + z_range
+        z_lowerpoint = z_setpoint - z_range
+
+        pid1 = PID(p, i, d, setpoint = z_setpoint)
+        z_error = z_setpoint - current_z
+        #z_actuation = -z_error * p
+        z_actuation = pid1(current_z)"""
+        #import pdb; pdb.set_trace()
+        x_setpoint = 0
+        x_range = 0.01
+        x_upperpoint = x_setpoint + x_range
+        x_lowerpoint = x_setpoint - x_range
+
+        px, ix, dx = 0.5, 0.5, 0
+        pid2 = PID(px, ix, dx, setpoint = x_setpoint)
+        #pid2.output_limits = (-0.05, 0.05)
+
+        x_error = x_setpoint - current_x
+        #x_actuation = x_error * px
+        x_actuation = pid2(current_y)
+
+        y_setpoint = 0
+        y_range = 0.01
+        y_upperpoint = y_setpoint + y_range
+        y_lowerpoint = y_setpoint - y_range
+
+        py, iy, dy = 0.5, 0.5, 0
+        pid3 = PID(py, iy, dy, setpoint = y_setpoint)
+        #pid3.output_limits = (-0.05, 0.05)
+        y_error = y_setpoint - current_y
+        #y_actuation = y_error * py
+        y_actuation = pid3(current_x)
+
+        print(x_lowerpoint, current_x, y_upperpoint)
+        print(y_lowerpoint, current_y, y_upperpoint)
+
+        """if current_y > y_lowerpoint and current_y < y_upperpoint:
+            #self.parrot_hold()
+            print('Drone is at the required position')
+        else:
+            self.parrot_adjust(y_actuation, command='y')"""
+
+
+        if current_y > y_lowerpoint and current_y < y_upperpoint:
+            # Based on the value of y, I decide what should be the change in x-direction velocity
+            #self.parrot_hold()
+            print(current_x > x_lowerpoint and current_x < x_upperpoint)
+
+            if current_x > x_lowerpoint and current_x < x_upperpoint:
+                # Based on the value of x, I decide what should be the change in y-direction velocity
+                #self.parrot_hold()
+                print('Drone is at the required position')
+            else:
+                self.parrot_adjust(y_actuation, command='y')
+
+        else:
+            #print(current_x > x_lowerpoint and current_x < x_upperpoint)
+
+            self.parrot_adjust(x_actuation, command = 'x')
+
+    def parrot_hold(self):
+        print('Drone in Hover mode')
+        
+        var_twist = Twist()
+        var_twist.linear.x = 0
+        var_twist.linear.y = 0
+        var_twist.linear.z = 0
+
+        self.vel.publish(var_twist)
+
+    def parrot_adjust(self, actuation, command):
+        print("Adjusting the drone")
+        print(actuation, command)
+        
+        var_twist = Twist()
+
+        if command == 'x':
+            var_twist.linear.x = actuation
+        elif command == 'z':
+            var_twist.linear.z = actuation
+        elif command == 'y':
+            var_twist.linear.y = actuation
+        
+        self.vel.publish(var_twist)
+
+def main():
+    rospy.init_node('height_check', anonymous=True)
+    controller = Controller()
+
+    try:
+        rospy.spin()
+    except KeyboardInterrupt:
+        pass
+
+if __name__ == '__main__':
+    main()

@@ -1,0 +1,8 @@
+prefix=/home/monojit/simulation_ws/devel
+
+Name: landing
+Description: Description of landing
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -1,0 +1,8 @@
+prefix=/home/monojit/simulation_ws/devel
+
+Name: slider_publisher
+Description: Description of slider_publisher
+Version: 1.1.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

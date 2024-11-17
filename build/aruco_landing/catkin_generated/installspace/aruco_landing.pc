@@ -1,0 +1,8 @@
+prefix=/home/monojit/simulation_ws/install
+
+Name: aruco_landing
+Description: Description of aruco_landing
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
