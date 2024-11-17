@@ -6,4 +6,8 @@ Well this is what this project solves. I used ROS, Gazebo and Python. For automa
 I used a PID controller to make the quadcopter land on the platform.
 
 
-Here is a demo on how it works.
+Here is a demo on how it works when the platform moves and the quadcopter needs to land on it.
+[watch the video here](https://github.com/MonojitSarkar/Autonomous-Landing-ROS/blob/main/video/translating.mp4)
+
+Simulation when the platform is stationary and the quadcopter needs to land on it.
+[watch the video here](https://github.com/MonojitSarkar/Autonomous-Landing-ROS/blob/main/video/notTranslating.mp4)
